@@ -29,32 +29,23 @@ console.log("Part1: ", calibrationResultPart1);
 console.log("Part2: ", calibrationResultPart2);
 
 function verifyValuesPart1(target: number, values: Array<number>): boolean {
-    let operationHistory = [new OperationRecord(values[0], 0)];
-    let possible = false;
-    while (operationHistory.length > 0) {
-        let currentRecord = operationHistory.pop()!!;
-        if (currentRecord.lastIndex >= values.length - 1) {
-            // Check total once we've used all the values
-            if (currentRecord.total == target) {
-                possible = true;
-                break;
-            }
-            continue;
-        }
-
-        if (currentRecord.total > target) {
-            // Early exit if impossible from this point
-            continue;
-        }
-
-        let nextValue = values[currentRecord.lastIndex + 1];
-        operationHistory.push(new OperationRecord(currentRecord.total + nextValue, currentRecord.lastIndex + 1));
-        operationHistory.push(new OperationRecord(currentRecord.total * nextValue, currentRecord.lastIndex + 1));
-    }
-    return possible
+    let ops = [
+        (a, b) => a + b,
+        (a, b) => a * b,
+    ]
+    return verifyValues(target, values, ops);
 }
 
 function verifyValuesPart2(target: number, values: Array<number>): boolean {
+    let ops = [
+        (a, b) => a + b,
+        (a, b) => a * b,
+        (a, b) => +("" + a + b),
+    ]
+    return verifyValues(target, values, ops);
+}
+
+function verifyValues(target: number, values: Array<number>, operations: Array<(a: number, b: number) => number>): boolean {
     let operationHistory = [new OperationRecord(values[0], 0)];
     let possible = false;
     while (operationHistory.length > 0) {
@@ -74,9 +65,9 @@ function verifyValuesPart2(target: number, values: Array<number>): boolean {
         }
 
         let nextValue = values[currentRecord.lastIndex + 1];
-        operationHistory.push(new OperationRecord(currentRecord.total + nextValue, currentRecord.lastIndex + 1));
-        operationHistory.push(new OperationRecord(currentRecord.total * nextValue, currentRecord.lastIndex + 1));
-        operationHistory.push(new OperationRecord(+("" + currentRecord.total + nextValue), currentRecord.lastIndex + 1));
+        for (let op of operations) {
+            operationHistory.push(new OperationRecord(op(currentRecord.total, nextValue), currentRecord.lastIndex + 1));
+        }
     }
     return possible
 }
