@@ -9,7 +9,7 @@ import (
 
 func main() {
 	reader := bufio.NewReader(os.Stdin)
-	fmt.Println("Input day [2, 4, 6]")
+	fmt.Println("Input day [2, 4, 6, 8]")
 	text, _ := reader.ReadString('\n')
 	switch strings.TrimSpace(text) {
 	case "2":
@@ -18,6 +18,8 @@ func main() {
 		day4()
 	case "6":
 		day6()
+	case "8":
+		day8()
 	default:
 		fmt.Println("No function available for day ", text)
 	}
