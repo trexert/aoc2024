@@ -29,3 +29,8 @@ func Gcd(a int, b int) int {
 
 	return a
 }
+
+type Point struct {
+	Row int
+	Col int
+}
