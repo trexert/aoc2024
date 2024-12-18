@@ -34,3 +34,12 @@ type Point struct {
 	Row int
 	Col int
 }
+
+func ArrayContains[T comparable](as []T, x T) bool {
+	for _, a := range as {
+		if a == x {
+			return true
+		}
+	}
+	return false
+}

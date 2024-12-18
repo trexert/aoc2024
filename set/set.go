@@ -32,6 +32,12 @@ func (this Set[T]) Values() []T {
 	return values
 }
 
+func (this Set[T]) AddAll(ts []T) {
+	for _, t := range ts {
+		this.Add(t)
+	}
+}
+
 func Intersection[T comparable](a, b Set[T]) Set[T] {
 	result := New[T]()
 	for entry := range a.backing {
