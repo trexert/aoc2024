@@ -40,6 +40,10 @@ type Point struct {
 	Col int
 }
 
+func (this Point) Add(other Point) Point {
+	return Point{this.Row + other.Row, this.Col + other.Col}
+}
+
 func ArrayContains[T comparable](as []T, x T) bool {
 	for _, a := range as {
 		if a == x {
@@ -56,15 +60,15 @@ type DijkstraNode[T comparable, D int | float32 | float64] struct {
 
 type DijkstraState[T comparable, D int | float32 | float64] struct {
 	location T
-	path []T
+	path     []T
 	distance D
 }
 
 type DijkstraQueue[T comparable, D int | float32 | float64] []DijkstraState[T, D]
 
-func (q DijkstraQueue[T, D]) Len() int { return len(q) }
+func (q DijkstraQueue[T, D]) Len() int           { return len(q) }
 func (q DijkstraQueue[T, D]) Less(i, j int) bool { return q[i].distance < q[j].distance }
-func (q DijkstraQueue[T, D]) Swap(i, j int) { q[i], q[j] = q[j], q[i] }
+func (q DijkstraQueue[T, D]) Swap(i, j int)      { q[i], q[j] = q[j], q[i] }
 
 func (q *DijkstraQueue[T, D]) Push(state any) {
 	*q = append(*q, state.(DijkstraState[T, D]))
@@ -72,15 +76,15 @@ func (q *DijkstraQueue[T, D]) Push(state any) {
 
 func (q *DijkstraQueue[T, D]) Pop() any {
 	old := *q
-	state := old[len(old) - 1]
-	*q = old[:len(old) - 1]
+	state := old[len(old)-1]
+	*q = old[:len(old)-1]
 	return state
 }
 
 func Dijkstras[T comparable, D int | float32 | float64](start T, isEnd func(T) bool, neighbours func(T) []DijkstraNode[T, D]) ([]T, D) {
 	visited := set.New[T]()
 	queue := make(DijkstraQueue[T, D], 0)
-	heap.Push(&queue, DijkstraState[T, D]{ location: start, distance: 0 })
+	heap.Push(&queue, DijkstraState[T, D]{location: start, distance: 0})
 
 	path := []T{}
 	distance := D(-1)
@@ -95,13 +99,13 @@ func Dijkstras[T comparable, D int | float32 | float64](start T, isEnd func(T) b
 
 		visited.Add(state.location)
 		for _, neighbour := range neighbours(state.location) {
-			if !visited.Has(neighbour.location) {
-				newPath := make([]T, len(state.path) + 1)
+			if !visited.Has(neighbour.Location) {
+				newPath := make([]T, len(state.path)+1)
 				copy(newPath, state.path)
-				newState := DijkstraState[T, D] {
-					location: neighbour.location,
-					distance: state.distance + neighbour.distance,
-					path: append(newPath, neighbour.location),
+				newState := DijkstraState[T, D]{
+					location: neighbour.Location,
+					distance: state.distance + neighbour.Distance,
+					path:     append(newPath, neighbour.Location),
 				}
 				heap.Push(&queue, newState)
 			}
