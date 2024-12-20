@@ -33,10 +33,8 @@ func day18() {
 
 	steps := FindRoute(blocks, BYTES_TO_DROP_P1)
 	println("Part1:", steps)
-	i := 1025
-	for ; FindRoute(blocks, i) > 0; i++ {
-	}
-	fmt.Printf("Part2: %d,%d", blocks[i-1].Col, blocks[i-1].Row)
+	droppedBytes := BinaryChop(func(bytesToDrop int) bool { return FindRoute(blocks, bytesToDrop) < 0 }, 1025, len(blocks))
+	fmt.Printf("Part2: %d,%d\n", blocks[droppedBytes-1].Col, blocks[droppedBytes-1].Row)
 }
 
 func FindRoute(blocks []Point, bytesToDrop int) int {

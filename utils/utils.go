@@ -61,6 +61,18 @@ func Abs[N int | float32 | float64](n N) N {
 	}
 }
 
+func BinaryChop(f func(int) bool, min int, max int) int {
+	for min < max {
+		mid := (min + max) / 2
+		if f(mid) {
+			max = mid
+		} else {
+			min = mid + 1
+		}
+	}
+	return min
+}
+
 type DijkstraNode[T comparable, D int | float32 | float64] struct {
 	Location T
 	Distance D
