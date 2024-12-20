@@ -53,6 +53,14 @@ func ArrayContains[T comparable](as []T, x T) bool {
 	return false
 }
 
+func Abs[N int | float32 | float64](n N) N {
+	if n < 0 {
+		return -n
+	} else {
+		return n
+	}
+}
+
 type DijkstraNode[T comparable, D int | float32 | float64] struct {
 	Location T
 	Distance D
