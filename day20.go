@@ -7,11 +7,6 @@ import (
 	"os"
 )
 
-type Cheat struct {
-	start Point
-	end   Point
-}
-
 func day20() {
 	f, err := os.Open("day20.input")
 	if err != nil {
