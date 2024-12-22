@@ -26,6 +26,8 @@ func main() {
 		day12()
 	case "14":
 		day14()
+	case "16":
+		day16()
 	case "18":
 		day18()
 	case "20":
